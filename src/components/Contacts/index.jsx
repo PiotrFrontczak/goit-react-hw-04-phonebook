@@ -1,4 +1,3 @@
-
 import { nanoid } from "nanoid";
 import { Component } from "react";
 import styles from "./Contacts.module.scss";
@@ -59,7 +58,7 @@ export default class Contacts extends Component {
             id={nameId}
             type="text"
             name="name"
-            pattern="^[a-zA-Zа-яА-Я]+(([' \-][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+            pattern="^[a-zA-Zа-яА-Я]+(([\' \\-][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
             required
             value={this.state.name}
             onChange={this.handleChange}
