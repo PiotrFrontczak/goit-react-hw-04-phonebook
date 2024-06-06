@@ -58,7 +58,7 @@ export default class Contacts extends Component {
             id={nameId}
             type="text"
             name="name"
-            pattern="^[a-zA-Zа-яА-Я]+(([\' \\-][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+            pattern="^[A-Za-z]+(\s[A-Za-z]+){0,2}$"
             required
             value={this.state.name}
             onChange={this.handleChange}
@@ -68,6 +68,7 @@ export default class Contacts extends Component {
             id={numId}
             type="tel"
             name="number"
+            pattern="^\d{9}$"
             required
             value={this.state.number}
             onChange={this.handleChange}
