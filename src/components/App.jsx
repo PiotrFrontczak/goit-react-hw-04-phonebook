@@ -1,7 +1,9 @@
+import Contacts from "./Contacts";
+
 function App() {
   return (
     <>
-      <h1>React Homework Template (Vite)</h1>
+      <Contacts />
     </>
   );
 }
