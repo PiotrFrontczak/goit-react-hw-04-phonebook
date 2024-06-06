@@ -1,3 +1,4 @@
+
 import { nanoid } from "nanoid";
 import { Component } from "react";
 import styles from "./Contacts.module.scss";
@@ -22,6 +23,13 @@ export default class Contacts extends Component {
 
   handleSubmit = (ev) => {
     ev.preventDefault();
+    const { contacts, name } = this.state;
+
+    if (contacts.some(contact => contact.name === name)) {
+      alert("Contact with this name is already in contacts.");
+      return;
+    }
+
     this.setState((prev) => {
       const list = [...prev.contacts];
       list.push({
@@ -29,7 +37,7 @@ export default class Contacts extends Component {
         name: this.state.name,
         number: this.state.number,
       });
-      return { contacts: list };
+      return { contacts: list, name: "", number: "" };
     });
   };
 
