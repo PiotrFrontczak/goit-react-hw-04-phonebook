@@ -45,6 +45,7 @@ export default class Contacts extends Component {
             id={nameId}
             type="text"
             name="name"
+            pattern="^[a-zA-Zа-яА-Я]+(([' \-][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
             required
             value={this.state.name}
             onChange={this.handleChange}
