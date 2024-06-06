@@ -26,7 +26,7 @@ export default class Contacts extends Component {
     const { contacts, name } = this.state;
 
     if (contacts.some(contact => contact.name === name)) {
-      alert("Contact with this name is already in contacts.");
+      alert("Contact with this name already exists.");
       return;
     }
 
@@ -39,6 +39,12 @@ export default class Contacts extends Component {
       });
       return { contacts: list, name: "", number: "" };
     });
+  };
+
+  handleDelete = (id) => {
+    this.setState((prev) => ({
+      contacts: prev.contacts.filter(contact => contact.id !== id)
+    }));
   };
 
   render() {
@@ -86,6 +92,7 @@ export default class Contacts extends Component {
             .map((contact) => (
               <li key={contact.id}>
                 {contact.name} - {contact.number}
+                <button onClick={() => this.handleDelete(contact.id)}>Delete</button>
               </li>
             ))}
         </ul>
