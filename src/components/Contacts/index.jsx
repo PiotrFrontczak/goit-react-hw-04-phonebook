@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 import styles from "./Contacts.module.scss";
 
 export default class Contacts extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      contacts: [],
+      contacts: props.initialContacts,
       name: "",
       number: "",
       filter: "",
