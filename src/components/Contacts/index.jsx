@@ -1,5 +1,6 @@
 import { nanoid } from "nanoid";
 import { Component } from "react";
+import PropTypes from 'prop-types';
 import styles from "./Contacts.module.scss";
 
 export default class Contacts extends Component {
@@ -100,3 +101,17 @@ export default class Contacts extends Component {
     );
   }
 }
+
+Contacts.propTypes = {
+  initialContacts: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      number: PropTypes.string.isRequired,
+    })
+  ),
+};
+
+Contacts.defaultProps = {
+  initialContacts: [],
+};
