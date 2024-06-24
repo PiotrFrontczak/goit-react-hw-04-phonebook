@@ -30,7 +30,7 @@ class AddContactForm extends Component {
     }
 
     addContact({
-      id: nanoid(), // Generujemy string jako id
+      id: nanoid(),
       name: this.state.name,
       number: this.state.number
     });
@@ -75,7 +75,7 @@ AddContactForm.propTypes = {
   addContact: PropTypes.func.isRequired,
   contacts: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.string.isRequired, // Upewnijmy się, że id jest stringiem
+      id: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
       number: PropTypes.string.isRequired,
     })
@@ -114,7 +114,7 @@ const ContactList = ({ contacts, deleteContact, filter, handleFilterChange }) =>
 ContactList.propTypes = {
   contacts: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.string.isRequired, // Upewnijmy się, że id jest stringiem
+      id: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
       number: PropTypes.string.isRequired,
     })
@@ -135,7 +135,11 @@ class App extends Component {
 
   componentDidMount() {
     const contacts = JSON.parse(localStorage.getItem('contacts')) || [];
-    this.setState({ contacts });
+    const updatedContacts = contacts.map(contact => ({
+      ...contact,
+      id: String(contact.id)
+    }));
+    this.setState({ contacts: updatedContacts });
   }
 
   componentDidUpdate(prevProps, prevState) {
