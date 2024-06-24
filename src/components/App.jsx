@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { nanoid } from 'nanoid';
 import PropTypes from 'prop-types';
-import styles from './Contacts/Contacts.module.scss';
+import styles from "./Contacts/Contacts.module.scss";
 
 class AddContactForm extends Component {
   constructor(props) {
