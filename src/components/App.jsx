@@ -137,7 +137,8 @@ class App extends Component {
     const contacts = JSON.parse(localStorage.getItem('contacts')) || [];
     const updatedContacts = contacts.map(contact => ({
       ...contact,
-      id: String(contact.id)
+      id: String(contact.id), 
+      number: contact.number ? String(contact.number) : ''
     }));
     this.setState({ contacts: updatedContacts });
   }
