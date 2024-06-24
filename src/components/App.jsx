@@ -1,28 +1,20 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { nanoid } from 'nanoid';
 import PropTypes from 'prop-types';
 import styles from "./Contacts/Contacts.module.scss";
 
-class AddContactForm extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      name: '',
-      number: ''
-    };
-  }
+const AddContactForm = ({ addContact, contacts }) => {
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
 
-  handleChange = (e) => {
+  const handleChange = (e) => {
     const { name, value } = e.currentTarget;
-    this.setState({
-      [name]: value
-    });
+    if (name === 'name') setName(value);
+    if (name === 'number') setNumber(value);
   };
 
-  handleSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    const { contacts, addContact } = this.props;
-    const { name } = this.state;
 
     if (contacts.some(contact => contact.name === name)) {
       alert("Contact with this name already exists.");
@@ -31,45 +23,44 @@ class AddContactForm extends Component {
 
     addContact({
       id: nanoid(),
-      name: this.state.name,
-      number: this.state.number
+      name,
+      number
     });
 
-    this.setState({ name: '', number: '' });
+    setName('');
+    setNumber('');
   };
 
-  render() {
-    const nameId = nanoid();
-    const numId = nanoid();
-    return (
-      <form className={styles.form} onSubmit={this.handleSubmit}>
-        <label htmlFor={nameId}>Name</label>
-        <input
-          id={nameId}
-          type="text"
-          name="name"
-          pattern="^[A-Za-z]+(\s[A-Za-z]+){0,2}$"
-          required
-          value={this.state.name}
-          onChange={this.handleChange}
-          className={styles.input}
-        />
-        <label htmlFor={numId}>Phone number</label>
-        <input
-          id={numId}
-          type="tel"
-          name="number"
-          pattern="^\d{9}$"
-          required
-          value={this.state.number}
-          onChange={this.handleChange}
-          className={styles.input}
-        />
-        <button type="submit" className={styles.button}>Add contact</button>
-      </form>
-    );
-  }
-}
+  const nameId = nanoid();
+  const numId = nanoid();
+  return (
+    <form className={styles.form} onSubmit={handleSubmit}>
+      <label htmlFor={nameId}>Name</label>
+      <input
+        id={nameId}
+        type="text"
+        name="name"
+        pattern="^[A-Za-z]+(\s[A-Za-z]+){0,2}$"
+        required
+        value={name}
+        onChange={handleChange}
+        className={styles.input}
+      />
+      <label htmlFor={numId}>Phone number</label>
+      <input
+        id={numId}
+        type="tel"
+        name="number"
+        pattern="^\d{9}$"
+        required
+        value={number}
+        onChange={handleChange}
+        className={styles.input}
+      />
+      <button type="submit" className={styles.button}>Add contact</button>
+    </form>
+  );
+};
 
 AddContactForm.propTypes = {
   addContact: PropTypes.func.isRequired,
@@ -124,61 +115,48 @@ ContactList.propTypes = {
   handleFilterChange: PropTypes.func.isRequired,
 };
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      contacts: [],
-      filter: ''
-    };
-  }
+const App = () => {
+  const [contacts, setContacts] = useState([]);
+  const [filter, setFilter] = useState('');
 
-  componentDidMount() {
-    const contacts = JSON.parse(localStorage.getItem('contacts')) || [];
-    const updatedContacts = contacts.map(contact => ({
+  useEffect(() => {
+    const storedContacts = JSON.parse(localStorage.getItem('contacts')) || [];
+    const updatedContacts = storedContacts.map(contact => ({
       ...contact,
-      id: String(contact.id), 
+      id: String(contact.id),
       number: contact.number ? String(contact.number) : ''
     }));
-    this.setState({ contacts: updatedContacts });
-  }
+    setContacts(updatedContacts);
+  }, []);
 
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.contacts !== this.state.contacts) {
-      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
-    }
-  }
+  useEffect(() => {
+    localStorage.setItem('contacts', JSON.stringify(contacts));
+  }, [contacts]);
 
-  addContact = (contact) => {
-    this.setState((prevState) => ({
-      contacts: [...prevState.contacts, contact]
-    }));
+  const addContact = (contact) => {
+    setContacts((prevContacts) => [...prevContacts, contact]);
   };
 
-  deleteContact = (contactId) => {
-    this.setState((prevState) => ({
-      contacts: prevState.contacts.filter(contact => contact.id !== contactId)
-    }));
+  const deleteContact = (contactId) => {
+    setContacts((prevContacts) => prevContacts.filter(contact => contact.id !== contactId));
   };
 
-  handleFilterChange = (e) => {
-    this.setState({ filter: e.currentTarget.value });
+  const handleFilterChange = (e) => {
+    setFilter(e.currentTarget.value);
   };
 
-  render() {
-    return (
-      <div className={styles.container}>
-        <h1 className={styles.title}>Phone Book</h1>
-        <AddContactForm addContact={this.addContact} contacts={this.state.contacts} />
-        <ContactList
-          contacts={this.state.contacts}
-          deleteContact={this.deleteContact}
-          filter={this.state.filter}
-          handleFilterChange={this.handleFilterChange}
-        />
-      </div>
-    );
-  }
-}
+  return (
+    <div className={styles.container}>
+      <h1 className={styles.title}>Phone Book</h1>
+      <AddContactForm addContact={addContact} contacts={contacts} />
+      <ContactList
+        contacts={contacts}
+        deleteContact={deleteContact}
+        filter={filter}
+        handleFilterChange={handleFilterChange}
+      />
+    </div>
+  );
+};
 
 export default App;
