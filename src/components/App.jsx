@@ -30,7 +30,7 @@ class AddContactForm extends Component {
     }
 
     addContact({
-      id: nanoid(),
+      id: nanoid(), // Generujemy string jako id
       name: this.state.name,
       number: this.state.number
     });
@@ -52,6 +52,7 @@ class AddContactForm extends Component {
           required
           value={this.state.name}
           onChange={this.handleChange}
+          className={styles.input}
         />
         <label htmlFor={numId}>Phone number</label>
         <input
@@ -62,8 +63,9 @@ class AddContactForm extends Component {
           required
           value={this.state.number}
           onChange={this.handleChange}
+          className={styles.input}
         />
-        <button type="submit">Add contact</button>
+        <button type="submit" className={styles.button}>Add contact</button>
       </form>
     );
   }
@@ -73,7 +75,7 @@ AddContactForm.propTypes = {
   addContact: PropTypes.func.isRequired,
   contacts: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.string.isRequired,
+      id: PropTypes.string.isRequired, // Upewnijmy się, że id jest stringiem
       name: PropTypes.string.isRequired,
       number: PropTypes.string.isRequired,
     })
@@ -91,6 +93,7 @@ const ContactList = ({ contacts, deleteContact, filter, handleFilterChange }) =>
         name="filter"
         value={filter}
         onChange={handleFilterChange}
+        className={styles.input}
       />
       <ul className={styles.list}>
         {contacts
@@ -98,9 +101,9 @@ const ContactList = ({ contacts, deleteContact, filter, handleFilterChange }) =>
             contact.name.toLowerCase().includes(filter.toLowerCase())
           )
           .map(contact => (
-            <li key={contact.id}>
+            <li key={contact.id} className={styles.listItem}>
               {contact.name} - {contact.number}
-              <button onClick={() => deleteContact(contact.id)}>Delete</button>
+              <button onClick={() => deleteContact(contact.id)} className={styles.deleteButton}>Delete</button>
             </li>
           ))}
       </ul>
@@ -111,7 +114,7 @@ const ContactList = ({ contacts, deleteContact, filter, handleFilterChange }) =>
 ContactList.propTypes = {
   contacts: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.string.isRequired,
+      id: PropTypes.string.isRequired, // Upewnijmy się, że id jest stringiem
       name: PropTypes.string.isRequired,
       number: PropTypes.string.isRequired,
     })
